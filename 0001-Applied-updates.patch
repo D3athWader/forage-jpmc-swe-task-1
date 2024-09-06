@@ -1,0 +1,70 @@
+From 6037148275c0029a0ec40e6f1a49b464f8edf962 Mon Sep 17 00:00:00 2001
+From: D3athWader <bharatkbishnoi29@gmail.com>
+Date: Sat, 20 Apr 2024 18:50:26 +0530
+Subject: [PATCH] Applied updates
+
+---
+ client3.py     | 14 ++++++++++----
+ client_test.py |  4 ++--
+ 2 files changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/client3.py b/client3.py
+index 3fc09b7..36d00c7 100644
+--- a/client3.py
++++ b/client3.py
+@@ -35,14 +35,17 @@ def getDataPoint(quote):
+     stock = quote['stock']
+     bid_price = float(quote['top_bid']['price'])
+     ask_price = float(quote['top_ask']['price'])
+-    price = bid_price
++    price =(bid_price + ask_price)/2
+     return stock, bid_price, ask_price, price
+ 
+ 
+ def getRatio(price_a, price_b):
+     """ Get ratio of price_a and price_b """
+     """ ------------- Update this function ------------- """
+-    return 1
++    if price_b == 0:
++        return 
++    ratio = round(price_a/price_b,5)
++    return ratio
+ 
+ 
+ # Main
+@@ -54,6 +57,9 @@ if __name__ == "__main__":
+         """ ----------- Update to get the ratio --------------- """
+         for quote in quotes:
+             stock, bid_price, ask_price, price = getDataPoint(quote)
++            if stock == "ABC":
++                abc_price = price
++            elif stock == "DEF":
++                def_price = price
+             print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
+-
+-        print("Ratio %s" % getRatio(price, price))
++        print("Ratio %s" % getRatio(abc_price, def_price))
+diff --git a/client_test.py b/client_test.py
+index af2bf26..3ed5719 100644
+--- a/client_test.py
++++ b/client_test.py
+@@ -8,14 +8,14 @@ class ClientTest(unittest.TestCase):
+       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
+     ]
+     """ ------------ Add the assertion below ------------ """
+-
++    self.assertEqual(getDataPoint(quote),dataPoint)
+   def test_getDataPoint_calculatePriceBidGreaterThanAsk(self):
+     quotes = [
+       {'top_ask': {'price': 119.2, 'size': 36}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 120.48, 'size': 109}, 'id': '0.109974697771', 'stock': 'ABC'},
+       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
+     ]
+     """ ------------ Add the assertion below ------------ """
+-
++    self.assertEqual(getDataPoint(quote),dataPoint)
+ 
+   """ ------------ Add more unit tests ------------ """
+ 
+-- 
+2.44.0.windows.1
+
